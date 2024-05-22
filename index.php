@@ -6,17 +6,63 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Programs</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css">
+    <!-- bootstrap icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
 </head>
+
+<?php
+// get total number of programs
+$db = new SQLite3('db.sqlite3');
+$programs = $db->query('SELECT * FROM programs');
+// get total number of programs
+$totalPrograms = 0;
+while ($program = $programs->fetchArray(SQLITE3_ASSOC)) {
+    $totalPrograms++;
+}
+$db->close();
+
+// get the category_of_credentialing distinct values
+$db = new SQLite3('db.sqlite3');
+$programs = $db->query('SELECT DISTINCT category_of_credentialing FROM programs');
+$categories = [];
+while ($category = $programs->fetchArray(SQLITE3_ASSOC)) {
+    $categories[] = $category['category_of_credentialing'];
+}
+
+// get the degree distinct values
+$db = new SQLite3('db.sqlite3');
+$programs = $db->query('SELECT DISTINCT level_of_degree FROM programs');
+$degrees = [];
+while ($degree = $programs->fetchArray(SQLITE3_ASSOC)) {
+    $degrees[] = $degree['level_of_degree'];
+}
+
+// get the program format distinct values
+$db = new SQLite3('db.sqlite3');
+$programs = $db->query('SELECT DISTINCT format FROM programs');
+$formats = [];
+while ($format = $programs->fetchArray(SQLITE3_ASSOC)) {
+    $formats[] = $format['format'];
+}
+
+// get the program type distinct values
+$db = new SQLite3('db.sqlite3');
+$programs = $db->query('SELECT DISTINCT program_type FROM programs');
+$programTypes = [];
+while ($programType = $programs->fetchArray(SQLITE3_ASSOC)) {
+    $programTypes[] = $programType['program_type'];
+}
+
+$db->close();
+?>
 
 <body>
     <div class="container">
         <h1 class="my-4">Programs</h1>
+        <p>Total Programs: <?= $totalPrograms ?></p>
         <!-- Search and Filter Options -->
         <div class="row mb-4">
-            <div class="col-md-6">
-                <input type="text" class="form-control" id="searchInput" placeholder="Search programs...">
-            </div>
-            <div class="col-md-6">
+            <div class="col">
                 <select class="form-select" id="stateFilter">
                     <option value="">Filter by State</option>
                     <!-- Dynamically populate state options -->
@@ -29,6 +75,46 @@
                     ?>
                 </select>
             </div>
+            <div class="col">
+                <!-- program type (ECE/ECSE/Blended) -->
+                <select class="form-select" id="programTypeFilter">
+                    <option value="">Filter by Program Type</option>
+                    <?php foreach ($programTypes as $programType) : ?>
+                        <option value="<?= $programType ?>"><?= $programType ?></option>
+                    <?php endforeach; ?>
+                </select>
+            
+            </div>
+
+            <div class="col">
+                <!-- category of credentialing (all distinct values) -->
+                <select class="form-select" id="categoryFilter">
+                    <option value="">Filter by Category of Credentialing</option>
+                    <?php foreach ($categories as $category) : ?>
+                        <option value="<?= $category ?>"><?= $category ?></option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+
+            <div class="col">
+                <select class="form-select" id="degreeFilter">
+                    <option value="">Filter by Degree</option>
+                    <?php foreach ($degrees as $degree) : ?>
+                        <option value="<?= $degree ?>"><?= $degree ?></option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+
+            <div class="col">
+                <!-- program format (all, online, in-person, hybrid, online option) -->
+                <select class="form-select" id="formatFilter">
+                    <option value="">Filter by Program Format</option>
+                    <?php foreach ($formats as $format) : ?>
+                        <option value="<?= $format ?>"><?= $format ?></option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+
         </div>
 
         <div id="programContainer">
@@ -45,28 +131,33 @@
                 $states[$state][] = $program;
             }
 
-            foreach ($states as $state => $programs) {
-                echo "<div class='state-group' data-state='$state'>";
-                echo "<h2 class='state-header'>State: $state (" . count($programs) . " programs)</h2>\n";
-                echo "<div class='row'>";
+            foreach ($states as $state => $programs) : ?>
+                <div class='state-group' data-state='<?= $state ?>'>
+                    <h2 class='state-header'>State: <?= $state ?> (<?= count($programs) ?> programs)</h2>
+                    <div class='row'>
+                        <?php foreach ($programs as $program) : ?>
+                            <div class='col-md-3 mb-4 program-card' data-state='<?= $program['state'] ?>' data-title='<?= $program['ihe_name'] ?>'>
+                                <div class='card h-100'>
+                                    <div class='card-body'>
+                                        <h3 class='card-title'><?= $program['ihe_name'] ?></h3>
+                                        <p class='card-text'>Program Title: <?= $program['program_title'] ?></p>
+                                        <p class='card-text'>Program Type: <?= $program['program_type'] ?></p>
+                                        <p class='card-text'>Category of Credentialing: <?= $program['category_of_credentialing'] ?></p>
+                                    </div>
+                                    <div class='card-footer'>
+                                        <a target="_blank" href='<?= $program['url_for_program'] ?>' class='btn btn-primary'>
+                                            Program Website
+                                            <!-- bootstarp icons external link -->
+                                            <i class='bi bi-box-arrow-up-right'></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        <?php endforeach; ?>
+                    </div> <!-- Close row -->
+                </div> <!-- Close state-group -->
+            <?php endforeach;
 
-                foreach ($programs as $program) {
-                    echo "<div class='col-md-3 mb-4 program-card' data-state='{$program['state']}' data-title='{$program['ihe_name']}'>";
-                    echo "<div class='card h-100'>";
-                    echo "<div class='card-body'>";
-                    echo "<h3 class='card-title'>{$program['ihe_name']}</h3>\n";
-                    echo "<p class='card-text'>Program Title: {$program['program_title']}</p>\n";
-                    echo "<p class='card-text'>URL: <a href=\"{$program['url_for_program']}\" target=\"_blank\">{$program['url_for_program']}</a></p>\n";
-                    echo "<p class='card-text'>Program Type: {$program['program_type']}</p>\n";
-                    echo "<p class='card-text'>Category of Credentialing: {$program['category_of_credentialing']}</p>\n";
-                    echo "</div>";
-                    echo "</div>";
-                    echo "</div>";
-                }
-
-                echo "</div>"; // Close row
-                echo "</div>"; // Close state-group
-            }
 
             $db->close();
             ?>
