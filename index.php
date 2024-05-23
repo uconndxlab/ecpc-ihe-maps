@@ -83,7 +83,7 @@ $db->close();
                         <option value="<?= $programType ?>"><?= $programType ?></option>
                     <?php endforeach; ?>
                 </select>
-            
+
             </div>
 
             <div class="col">
@@ -138,13 +138,19 @@ $db->close();
                         <?php foreach ($programs as $program) : ?>
                             <div class='col-md-3 mb-4 program-card' data-state='<?= $program['state'] ?>' data-title='<?= $program['ihe_name'] ?>'>
                                 <div class='card h-100'>
+                                    <div class="card-header">
+                                        <h5 class="card-title"><?= $program['program_title'] ?></h5>
+                                    </div>
                                     <div class='card-body'>
-                                        <h3 class='card-title'><?= $program['ihe_name'] ?></h3>
-                                        <p class='card-text'>Program Title: <?= $program['program_title'] ?></p>
-                                        <p class='card-text'>Program Type: <?= $program['program_type'] ?></p>
-                                        <p class='card-text'>Category of Credentialing: <?= $program['category_of_credentialing'] ?></p>
+                                    <span class="badge bg-dark"><?= $program['ihe_name']; ?></span>
+                                    <span class="badge bg-primary"><?= $program['level_of_degree'] ?></span>
+                                        <span class="badge bg-secondary"><?= $program['format'] ?></span>
+                                        <span class="badge bg-success"><?= $program['program_type'] ?></span>
+                                        <span class="badge bg-danger"><?= $program['category_of_credentialing'] ?></span>
+
                                     </div>
                                     <div class='card-footer'>
+
                                         <a target="_blank" href='<?= $program['url_for_program'] ?>' class='btn btn-primary'>
                                             Program Website
                                             <!-- bootstarp icons external link -->
