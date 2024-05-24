@@ -8,3 +8,33 @@ path:hover {
 /** uconn blue **/
     fill: #041e42!important;
 }
+
+
+/** make the cards tidy and compact **/
+.card {
+    margin: 0px;
+    padding: 0px;
+    border: 0px;
+    border-radius: 0px;
+    box-shadow: 0px 0px 0px 0px;
+    background-color: #f8f9fa;
+}
+
+.card-header {
+    background-color: #041e42;
+    color: white;
+}
+
+.card-title {
+    /** smaller font size **/
+    font-size: 1rem;
+}
+
+/** card-body is full of badges, so make them spaced out nicely **/
+.card-body {
+    padding: 0.5rem;
+}
+
+.card-body .badge {
+    margin: 0.1rem;
+}
