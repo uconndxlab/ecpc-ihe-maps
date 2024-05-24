@@ -1,0 +1,10 @@
+path {
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+
+path:hover {
+/** uconn blue **/
+    fill: #041e42!important;
+}
