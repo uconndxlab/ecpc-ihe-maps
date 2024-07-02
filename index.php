@@ -373,6 +373,22 @@ $db->close();
 
    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"></script>
 
+   <script>
+
+      // when a user clicks on a state, a href to the state's page is triggered ?state=state_id
+
+      const states = document.querySelectorAll('path');
+
+      states.forEach(state => {
+         state.addEventListener('click', () => {
+            window.location.href = `?state=${state.getAttribute('data-name')}`;
+         });
+      });
+
+      
+
+   </script>
+
 </body>
 
 </html>
