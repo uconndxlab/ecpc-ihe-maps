@@ -38,3 +38,7 @@ path:hover {
 .card-body .badge {
     margin: 0.1rem;
 }
+
+.state-header {
+    font-size:18px;
+}
