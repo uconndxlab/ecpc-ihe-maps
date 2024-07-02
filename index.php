@@ -168,6 +168,13 @@ $db->close();
 
                </select>
 
+               <!-- echo the distict program types as ul list -->
+               <!-- <ul>
+                  <?php foreach ($programTypes as $programType) : ?>
+                     <li><?= $programType ?></li>
+                  <?php endforeach; ?>
+               </ul>  -->
+
             </div>
 
             <div class="col">
@@ -178,6 +185,13 @@ $db->close();
                       <option value="<?= $category ?>" <?php if(isset($_GET['category_of_credentialing']) && $_GET['category_of_credentialing'] == $category) echo 'selected'; ?>><?= $category ?></option>
                     <?php endforeach; ?>
                </select>
+
+               <!-- <ul>
+                  <?php foreach ($categories as $category) : ?>
+                     <li><?= $category ?></li>
+                  <?php endforeach; ?>
+               </ul> -->
+
             </div>
 
             <div class="col">
@@ -188,6 +202,12 @@ $db->close();
                     <?php endforeach; ?>
 
                </select>
+
+               <!-- <ul>
+                  <?php foreach ($degrees as $degree) : ?>
+                     <li><?= $degree ?></li>
+                  <?php endforeach; ?>
+               </ul> -->
             </div>
 
             <div class="col">
@@ -197,7 +217,12 @@ $db->close();
                     <?php foreach ($formats as $format) : ?>
                       <option value="<?= $format ?>" <?php if(isset($_GET['format']) && $_GET['format'] == $format) echo 'selected'; ?>><?= $format ?></option>
                     <?php endforeach; ?>
-               </select>
+                  </select>
+               <!-- <ul>
+                  <?php foreach ($formats as $format) : ?>
+                     <li><?= $format ?></li>
+                  <?php endforeach; ?>
+               </ul> -->
             </div>
             <div class="col">
                <button type="submit" class="btn btn-primary">Filter</button>
